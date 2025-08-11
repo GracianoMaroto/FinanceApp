@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCECLsiquBsTtFfXNzTwEUB5y-RhM8XbBA",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "finance-app-fc575.firebaseapp.com",
   projectId: "finance-app-fc575",
   storageBucket: "finance-app-fc575.appspot.com",
