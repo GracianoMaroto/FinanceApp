@@ -1,81 +1,120 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+<q-layout view="lHh Lpr lff">
+      <q-header elevated class="bg-dark">
+        <q-toolbar>
+          <q-toolbar-title>Finance App</q-toolbar-title>
+          <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+        </q-toolbar>
+      </q-header>
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+      <q-drawer
+        v-model="drawer"
+        show-if-above
+        :width="200"
+        :breakpoint="430"
+      >
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+          <q-list padding>
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
+            <q-item clickable v-ripple to="/about" active-class="my-menu-link">
+              <q-item-section avatar>
+                <q-icon name="star" />
+              </q-item-section>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+              <q-item-section>
+                Sobre
+              </q-item-section>
+            </q-item>
+            
+            <q-item clickable v-ripple to="/finance" active-class="my-menu-link">
+              <q-item-section avatar>
+                <q-icon name="ti-money" />
+              </q-item-section>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
+              <q-item-section>
+                Finanças
+              </q-item-section>
+            </q-item> 
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+          </q-list>
+            <q-btn
+            color="black"
+            icon="logout"
+            label="Sair"
+            @click="handleLogout"
+            class="q-mt-md absolute-bottom"
+            />
+        </q-scroll-area>
+        
+        <q-img class="absolute-top" src="/src/assets/fundoSite.jpg" style="height: 150px">
+          <div class="absolute-bottom bg-transparent" style="text-align: center;">
+
+            <q-avatar
+              size="56px"
+              class="q-mb-sm"
+            >
+              <template v-if="photoURL">
+                <img :src="photoURL" alt="Foto do usuário"/>
+              </template>
+              <template v-else>
+                <q-icon name="person" size="40px" color="grey-5"/>
+              </template>
+            </q-avatar>
+
+            <div class="text-weight-bold text-white">{{ displayName }}</div>
+            <div class="text-white" style="font-size: 0.9em">{{ email }}</div>
+          </div>
+        </q-img>
+      </q-drawer>
+
+      <q-page-container>
+        <router-view>
+          
+        </router-view>
+      </q-page-container>
+
+        <q-footer class="bg-grey-2 text-black" elevated>
+        <div class="text-center q-pa-sm">
+          © {{ new Date().getFullYear() }} Finance App — Todos os direitos reservados. Desenvolvido por Graciano Marôto
+        </div>
+      </q-footer>
+
+    </q-layout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { ref , onMounted} from 'vue'
+import { auth } from 'src/firebase'
+import { useRouter } from 'vue-router'
+import { logout } from 'src/services/authService'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-]
+const router = useRouter()
+const drawer = ref(false)
 
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+async function handleLogout() {
+  await logout()
+  router.push('/auth') // Redireciona para a página de login
 }
+
+const photoURL = ref(null)
+const displayName = ref('Usuário')
+const email = ref('')
+
+onMounted(() => {
+  const user = auth.currentUser
+  if(user) {
+    displayName.value = user.displayName || user.email || 'Usuário'
+    email.value = user.email || ''
+  }
+})
+
 </script>
+
+
+<style lang="scss">
+.my-menu-link{
+  color: white;
+  background: #f2c037
+}
+  
+</style>

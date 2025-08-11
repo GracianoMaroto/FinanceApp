@@ -22,7 +22,7 @@ export default defineConfig((/* ctx */) => {
       // 'mdi-v7',
       // 'fontawesome-v6',
       // 'eva-icons',
-      // 'themify',
+     'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
@@ -91,7 +91,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'],
     },
 
     // animations: 'all', // --- includes all animations
