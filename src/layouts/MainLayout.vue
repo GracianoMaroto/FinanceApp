@@ -1,6 +1,6 @@
 <template>
 <q-layout view="lHh Lpr lff">
-      <q-header elevated class="bg-dark">
+      <q-header elevated style="background-color: #04294e;" >
         <q-toolbar>
           <q-toolbar-title>Finance App</q-toolbar-title>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
@@ -14,7 +14,7 @@
         :breakpoint="430"
       >
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
-          <q-list padding>
+          <q-list padding style="color: #04294e;">
 
             <q-item clickable v-ripple to="/about" active-class="my-menu-link">
               <q-item-section avatar>
@@ -38,7 +38,7 @@
 
           </q-list>
             <q-btn
-            color="black"
+            style="color: #04294e;"
             icon="logout"
             label="Sair"
             @click="handleLogout"
@@ -46,7 +46,7 @@
             />
         </q-scroll-area>
         
-        <q-img class="absolute-top" src="/src/assets/fundoSite.jpg" style="height: 150px">
+        <q-img class="absolute-top" src="icons/bgimg.png" style="height: 150px" alt="https://pt.lovepik.com/images/png-blue-pattern.html">
           <div class="absolute-bottom bg-transparent" style="text-align: center;">
 
             <q-avatar
@@ -114,7 +114,7 @@ onMounted(() => {
 <style lang="scss">
 .my-menu-link{
   color: white;
-  background: #f2c037
+  background: #04294e
 }
   
 </style>

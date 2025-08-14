@@ -6,16 +6,15 @@
       title="Despesas Adicionadas"
       :columns="columns"
       :rows="descricoes"
-      dark
-      color="amber"
-      selection="single"
+      selection="single" 
       v-model:selected="selected"
       row-key="id"
+      style="background-color: white ; color: #04294e;"
     />
-    <br />
+    <br>
     <q-btn
       icon="delete"
-      style="background: black; color: white"
+      style="background: white; color: #04294e;"
       @click="deleteRow"
       :disable="selected.length === 0"
     >
@@ -48,7 +47,7 @@ const columns = [
   },
   {
     name: 'descriçao',
-    label: 'Description',
+    label: 'Descrição',
     align: 'left',
     field: 'descriçao',
     sortable: true
@@ -66,7 +65,7 @@ const columns = [
   },
   {
     name: 'tipo',
-    label: 'Tipo',
+    label: 'Pagamento',
     align: 'left',
     field: 'tipo',
     sortable: true

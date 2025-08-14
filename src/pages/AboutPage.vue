@@ -1,3 +1,7 @@
+<script setup>
+import carrosselSlides from 'src/components/carroselSlides.vue'
+</script>
+
 <template>
     <q-page padding>
         <div>
@@ -8,18 +12,8 @@
 
                 Com o FinanceApp, você poderá: <br><br>
 
-                💰 Registrar suas despesas e receitas com valores formatados automaticamente como moeda (R$), garantindo clareza e rapidez na hora de preencher os dados.
-<br>
-                📅 Selecionar a data das transações com poucos cliques, sempre com a opção da data atual já preenchida para facilitar seu dia a dia.
-<br>
-                🧾 Visualizar e organizar seus lançamentos financeiros por data e categoria, tornando mais fácil identificar onde está gastando mais e onde pode economizar.
-<br>
-                👤 Criar sua conta com email e senha, garantindo total segurança dos seus dados e acesso exclusivo ao seu histórico de movimentações.
-<br>
-                🖼️ Adicionar sua foto de perfil e nome, deixando sua experiência mais personalizada. E se preferir, pode usar o app sem foto — sem problemas!
-<br>
-                🔐 Tudo isso com a confiança do Firebase, garantindo segurança no login e armazenamento em nuvem.
-<br><br>
+                <carrosselSlides/>
+
                 Por que escolher o FinanceApp?
 <br>
                 Porque ele é simples, direto ao ponto e feito para quem quer entender e melhorar sua relação com o dinheiro. 
@@ -39,27 +33,27 @@
                 Se quiser conhecer mais do meu trabalho, acesse meus repositórios no GitHub ou meu perfil no LinkedIn. E, claro, sinta-se à 
                 vontade para entrar em contato comigo por e-mail — todos os links estão disponíveis nos botões abaixo!
 </p>
-<br><br><br>
         </div>
-        
+
+
         <footer>    
             <div class="q-gutter-sm text-center">
                 <q-btn
                 label="Linkedin"
                 icon="ti-linkedin"
-                color="black"
+                style="background-color: rgb(4, 41, 78); color: white;"
                 href="https://www.linkedin.com/in/4raciano-mar%C4%B4to-da-cunha-neto-992554316/"
                 />
                 <q-btn
                 label="E-mail"
                 icon="ti-info-alt"
-                color="black"
+                style="background-color: rgb(4, 41, 78); color: white;"
                 href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJftLxDZMjrcxJddJMsNLsvVxzwNPkMMwzvlHfxdcJCrmGrSsWpRqCwGPRXKphFSzCRrsmg"
                 />
                 <q-btn
                 label="GitHub"
                 icon="ti-github"
-                color="black"
+                style="background-color: rgb(4, 41, 78); color: white;"
                 href="https://github.com/GracianoMaroto"
                 />
             </div>
