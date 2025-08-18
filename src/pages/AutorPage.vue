@@ -1,11 +1,8 @@
  <template>
-   <div class="q-pa-md">
+   <div class="q-pa-sm">
     <div class="text-center">
       <div class="col-6">
         <q-img src="..//assets/fotoMinha.jpeg" style="height: 300px; width: 300px;">
-            <div class="absolute-bottom text-subtitle1 text-center">
-                Graciano Marôto
-            </div>
             </q-img>
         </div>
     </div>

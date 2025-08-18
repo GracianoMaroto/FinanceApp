@@ -10,10 +10,10 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/auth', redirect: '/finance' }, // Redireciona para finanças após login
+      { path: '/auth', redirect: '/autor' }, // Redireciona para finanças após login
+      { path: 'autor', component: () => import('pages/AutorPage.vue') },
       { path: 'about', component: () => import('pages/AboutPage.vue') },
       { path: 'finance', component: () => import('pages/FinancasPage.vue') },
-      { path: 'autor', component: () => import('pages/AutorPage.vue') }
     ],
   },
 
