@@ -6,7 +6,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from 'src/firebase'
 
 //Parte do dialog
-import DialogRegister from 'src/components/DialogRegister.vue';
+import DialogAddDespesa from 'src/components/DialogAddDespesa.vue';
 import { useQuasar } from 'quasar'
 
 const showDialog = ref(false)
@@ -56,13 +56,19 @@ const handleDelete = async (itemToDelete) => {
           
           <!-- Parte do Dialog -->
           <div class="q-pa-sm">
-            <q-btn style="color: #04294e;" @click="showDialog = true" label="+ Nova Despesa"/>   
-            
-            <dialog-register
-            v-model="showDialog"
-            />
+            <div class="q-gutter-sm">
+
+              <q-btn style="color: #04294e;" @click="showDialog = true" label="+ Nova Despesa"/>   
+              
+              <dialog-add-despesa
+              v-model="showDialog"
+              />
+              <q-btn style="background-color: #04294e;  color: white;" @click="showDialog = true" label="Despesas fixas"/>   
+
+            </div>
           </div>
-          <!-- Parte do Dialog -->
+
+          <!-- Parte das despesas-->
           <CategoriasFin :descricoes="descricoes" @delete-item="handleDelete" />
           
         </q-page>

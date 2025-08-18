@@ -13,6 +13,7 @@ const routes = [
       { path: '/auth', redirect: '/finance' }, // Redireciona para finanças após login
       { path: 'about', component: () => import('pages/AboutPage.vue') },
       { path: 'finance', component: () => import('pages/FinancasPage.vue') },
+      { path: 'autor', component: () => import('pages/AutorPage.vue') }
     ],
   },
 

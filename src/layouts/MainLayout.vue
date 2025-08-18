@@ -16,6 +16,16 @@
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
           <q-list padding style="color: #04294e;">
 
+            <q-item clickable v-ripple to="/autor" active-class="my-menu-link">
+              <q-item-section avatar>
+                <q-icon name="brush" />
+              </q-item-section>
+
+              <q-item-section>
+                Autor
+              </q-item-section>
+            </q-item> 
+
             <q-item clickable v-ripple to="/about" active-class="my-menu-link">
               <q-item-section avatar>
                 <q-icon name="star" />
