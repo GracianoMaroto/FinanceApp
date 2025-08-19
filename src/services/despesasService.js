@@ -28,3 +28,31 @@ export async function deletarDespesa(id) {
   const docRef = doc(db, 'despesas', user.uid, 'lista', id)
   await deleteDoc(docRef)
 }
+
+// Adiciona uma despesa fixa para o usuário logado
+export async function adicionarDespesaFixa(dados) {
+  const user = auth.currentUser
+  if (!user) throw new Error('Usuário não autenticado')
+
+  const ref = collection(db, 'despesas fixas', user.uid, 'lista')
+  await addDoc(ref, dados)
+}
+
+// Busca todas as despesas do usuário logado
+export async function buscarDespesasFixas() {
+  const user = auth.currentUser
+  if (!user) throw new Error('Usuário não autenticado')
+
+  const ref = collection(db, 'despesas fixas', user.uid, 'lista')
+  const snapshot = await getDocs(ref)
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+}
+
+// Excluir despesa por id
+export async function deletarDespesaFixa(id) {
+  const user = auth.currentUser
+  if (!user) throw new Error('Usuário não autenticado')
+
+  const docRef = doc(db, 'despesas fixas', user.uid, 'lista', id)
+  await deleteDoc(docRef)
+}

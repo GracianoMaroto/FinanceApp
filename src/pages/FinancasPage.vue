@@ -7,9 +7,12 @@ import { auth } from 'src/firebase'
 
 //Parte do dialog
 import DialogAddDespesa from 'src/components/DialogAddDespesa.vue';
+import DialogDespesaFixa from 'src/components/DialogDespesaFixa.vue'
 import { useQuasar } from 'quasar'
 
 const showDialog = ref(false)
+const showDespesa = ref(false)
+
 
 //Parte do dialog
 
@@ -58,13 +61,16 @@ const handleDelete = async (itemToDelete) => {
           <div class="q-pa-sm">
             <div class="q-gutter-sm">
 
-              <q-btn style="color: #04294e;" @click="showDialog = true" label="+ Nova Despesa"/>   
               
               <dialog-add-despesa
               v-model="showDialog"
               />
-              <q-btn style="background-color: #04294e;  color: white;" @click="showDialog = true" label="Despesas fixas"/>   
-
+              <q-btn style="color: #04294e;" @click="showDialog = true" label="+ Nova Despesa"/>   
+              
+              <dialog-despesa-fixa
+              v-model="showDespesa"
+              />
+              <q-btn style="background-color: #04294e;  color: white;" @click="showDespesa = true" label="Despesas fixas"/>
             </div>
           </div>
 

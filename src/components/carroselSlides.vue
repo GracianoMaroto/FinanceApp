@@ -41,7 +41,7 @@ const slide = ref('style')
         <q-carousel-slide name="dashboard" class="column no-wrap flex-center">
           <q-icon name="dashboard" size="56px" />
           <div class="q-mt-md text-center">
-            visualizar e organizar seus lançamentos financeiros por data, descrição, valor e forma de pagamento.
+            Visualizar e organizar seus lançamentos financeiros por data, descrição, valor e forma de pagamento.
           </div>
         </q-carousel-slide>
 

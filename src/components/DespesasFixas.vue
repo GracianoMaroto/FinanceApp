@@ -2,10 +2,10 @@
   <div>
     <q-table
       class="q-mt-xl"
-      no-data-label="Sem Despesas para mostrar"
-      title="Despesas Diárias"
+      no-data-label="Sem Despesas Fixas para mostrar"
+      title="Despesas Fixas Adicionadas"
       :columns="columns"
-      :rows="descricoes"
+      :rows="despesasFixas"
       selection="single" 
       v-model:selected="selected"
       row-key="id"
@@ -18,7 +18,7 @@
       @click="deleteRow"
       :disable="selected.length === 0"
     >
-      Deletar Despesa
+      Deletar Despesa Fixa
     </q-btn>
   </div>
 </template>
@@ -27,7 +27,7 @@
 import { ref } from 'vue'
 
 defineProps({
-  descricoes: {
+  despesasFixas: {
     type: Array,
     required: true
   }
@@ -63,9 +63,16 @@ const columns = [
       currency: 'BRL'
     })
   },
+    {
+    name: 'categoria',
+    label: 'Categoria',
+    align: 'left',
+    field: 'categoria',
+    sortable: true
+  },
   {
     name: 'tipo',
-    label: 'Pagamento',
+    label: 'Status',
     align: 'left',
     field: 'tipo',
     sortable: true
