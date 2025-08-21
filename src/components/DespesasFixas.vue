@@ -81,13 +81,6 @@ const columns = [
     field: 'tipo',
     sortable: true
   },  
-  {
-    name: 'açoes',
-    label: 'Ações',
-    align: 'left',
-    field: 'açoes',
-    sortable: true
-  }
 ]
 
 function deleteRow() {
