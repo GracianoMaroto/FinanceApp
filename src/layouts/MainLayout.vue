@@ -13,8 +13,8 @@
         :width="200"
         :breakpoint="430"
       >
-        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
-          <q-list padding style="color: #04294e;">
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd; background-color: #04294e;">
+          <q-list padding style="color: white;">
 
             <q-item clickable v-ripple to="/autor" active-class="my-menu-link">
               <q-item-section avatar>
@@ -48,7 +48,7 @@
 
           </q-list>
             <q-btn
-            style="color: #04294e;"
+            style="color: white;"
             icon="logout"
             label="Sair"
             @click="handleLogout"
@@ -123,8 +123,8 @@ onMounted(() => {
 
 <style lang="scss">
 .my-menu-link{
-  color: white;
-  background: #04294e
+  color: #04294e;
+  background: white;
 }
   
 </style>

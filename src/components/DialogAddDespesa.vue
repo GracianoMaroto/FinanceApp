@@ -23,6 +23,8 @@ const myForm = ref(null)
 const descriçao = ref(null)
 const seleçao = ref(null)
 const date = ref(null)
+const seleçaoCategoria = ref(null)
+const categorias = ["Alimentação" , "Saúde" , "Transporte" , "Faculdade" , "Gerais"]
 const opçoes = ["Crédito", "Débito", "Dinheiro", "Pix"]
 const descricoes = ref([])
 
@@ -42,7 +44,9 @@ const processarFormulario = async () => {
       date: date.value,
       descriçao: descriçao.value,
       tipo: seleçao.value,
-      valor: valorNumerico.value
+      valor: valorNumerico.value,
+      categoria: seleçaoCategoria.value
+
     }
     await adicionarDespesa(novaDespesa)
     $q.notify({
@@ -54,6 +58,7 @@ const processarFormulario = async () => {
     await carregarDespesas()
     reset()
     myForm.value.resetValidation()
+    location.reload()
   } catch (error) {
     console.error('Erro ao adicionar despesa:', error)
     $q.notify({
@@ -62,6 +67,7 @@ const processarFormulario = async () => {
       icon: 'error',
       message: 'Erro ao adicionar despesa'
     })
+
   }
 }
 
@@ -71,6 +77,8 @@ const reset = () => {
   seleçao.value = null
   valorNumerico.value = 0
   valorFormatado.value = ''
+  seleçaoCategoria.value = null
+
 }
 
 const valorNumerico = ref(0)
@@ -143,6 +151,16 @@ function formatarValor(val) {
                     inputmode="numeric"
                   />  
               </div>    
+              
+              <div class="col-12 col-sm-2">
+                  <q-select
+                  label="Categoria"
+                  v-model="seleçaoCategoria"
+                  :options="categorias"
+                  lazy-rules
+                  :rules="[val => val && val.length > 0 || 'Por favor, selecione uma opção.']"
+                  />
+              </div> 
 
               <div class="col-12 col-sm-2">
                   <q-select

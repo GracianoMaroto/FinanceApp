@@ -12,15 +12,19 @@
       style="background-color: white ; color: #04294e;"
     />
     <br>
-    <q-btn
+    <div class="q-gutter-sm">
+      
+      <q-btn
       icon="delete"
       style="background: white; color: #04294e;"
       @click="deleteRow"
       :disable="selected.length === 0"
-    >
+      >
       Deletar Despesa Fixa
     </q-btn>
-  </div>
+
+</div>
+</div>
 </template>
 
 <script setup>
@@ -63,7 +67,7 @@ const columns = [
       currency: 'BRL'
     })
   },
-    {
+  {
     name: 'categoria',
     label: 'Categoria',
     align: 'left',
@@ -76,6 +80,13 @@ const columns = [
     align: 'left',
     field: 'tipo',
     sortable: true
+  },  
+  {
+    name: 'açoes',
+    label: 'Ações',
+    align: 'left',
+    field: 'açoes',
+    sortable: true
   }
 ]
 
@@ -85,4 +96,5 @@ function deleteRow() {
   emit('delete-item', selected.value[0])
   selected.value = []
 }
+
 </script>

@@ -5,18 +5,8 @@ const model = defineModel({default: false})
 
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { adicionarDespesaFixa, buscarDespesasFixas, deletarDespesaFixa } from 'src/services/despesasService'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from 'src/firebase'
-import DespesasFixas from './DespesasFixas.vue';
+import { adicionarDespesaFixa, buscarDespesasFixas } from 'src/services/despesasService'
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    carregarDespesasFixas()
-  } else {
-    despesasFixas.value = []
-  }
-})
 const $q = useQuasar()
 
 const myForm = ref(null)
@@ -43,8 +33,8 @@ const processarFormulario = async () => {
     const novaDespesaFixa = {
       date: date.value,
       descriçao: descriçao.value,
-      tipo: seleçao.value,
       valor: valorNumerico.value,
+      tipo: seleçao.value,
       categoria: seleçaoCategoria.value
     }
     await adicionarDespesaFixa(novaDespesaFixa)
@@ -57,6 +47,7 @@ const processarFormulario = async () => {
     await carregarDespesasFixas()
     reset()
     myForm.value.resetValidation()
+    location.reload()
   } catch (error) {
     console.error('Erro ao adicionar despesa fixa:', error)
     $q.notify({
@@ -96,20 +87,6 @@ function formatarValor(val) {
     style: 'currency',
     currency: 'BRL',
   })
-}
-const handleDelete = async (itemToDelete) => {
-  try {
-    await deletarDespesaFixa(itemToDelete.id)
-    await carregarDespesasFixas()
-  } catch (error) {
-    console.error('Erro ao deletar despesa:', error)
-    $q.notify({
-      color: 'negative',
-      textColor: 'white',
-      icon: 'error',
-      message: 'Erro ao deletar despesa'
-    })
-  }
 }
 </script>
 
@@ -179,7 +156,7 @@ const handleDelete = async (itemToDelete) => {
                   lazy-rules
                   :rules="[val => val && val.length > 0 || 'Por favor, selecione uma opção.']"
                   />
-              </div>    
+              </div>
 
               <div class="col-12">
                   <q-btn label="Adicionar Despesa Fixa" style="color: #04294e;" type="submit" />
@@ -187,8 +164,6 @@ const handleDelete = async (itemToDelete) => {
               </div>    
               </q-form>
               </div>
-              <DespesasFixas :despesasFixas="despesasFixas" @delete-item="handleDelete" />
-
   </dialog-base>            
   
 </template>

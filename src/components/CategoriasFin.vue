@@ -64,6 +64,13 @@ const columns = [
     })
   },
   {
+    name: 'categoria',
+    label: 'Categoria',
+    align: 'left',
+    field: 'categoria',
+    sortable: true
+  },
+  {
     name: 'tipo',
     label: 'Pagamento',
     align: 'left',

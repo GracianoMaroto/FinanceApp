@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-const slide = ref('style')
+const slide = ref('money')
 </script>
 
 
