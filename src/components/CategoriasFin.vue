@@ -12,14 +12,25 @@
       style="background-color: white ; color: #04294e;"
     />
     <br>
-    <q-btn
-      icon="delete"
-      style="background: white; color: #04294e;"
-      @click="deleteRow"
-      :disable="selected.length === 0"
-    >
-      Deletar Despesa
-    </q-btn>
+      <div class="q-gutter-sm">
+        <q-btn
+          icon="delete"
+          style="background: white; color: #04294e;"
+          @click="deleteRow"
+          :disable="selected.length === 0"
+        >
+          Deletar Despesa
+        </q-btn>
+        <q-btn
+        icon="create"
+        style="background: #04294e; color: white;"
+        :disable="selected.length === 0"
+        @click="emit('editar-diaria', selected[0])"
+        >
+        Editar Despesa Diária
+      </q-btn>
+    </div>
+
   </div>
 </template>
 
@@ -33,29 +44,29 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['delete-item'])
+const emit = defineEmits(['delete-item' , 'editar-diaria'])
 
 const selected = ref([])
 
 const columns = [
   {
     name: 'date',
-    label: 'Date',
-    align: 'left',
+    label: 'Data',
+    align: 'center',
     field: 'date',
     sortable: true
   },
   {
     name: 'descriçao',
     label: 'Descrição',
-    align: 'left',
+    align: 'center',
     field: 'descriçao',
     sortable: true
   },
   {
     name: 'valor',
     label: 'Valor',
-    align: 'left',
+    align: 'center',
     field: 'valor',
     sortable: true,
     format: val => Number(val).toLocaleString('pt-BR', {
@@ -66,14 +77,14 @@ const columns = [
   {
     name: 'categoria',
     label: 'Categoria',
-    align: 'left',
+    align: 'center',
     field: 'categoria',
     sortable: true
   },
   {
     name: 'tipo',
     label: 'Pagamento',
-    align: 'left',
+    align: 'center',
     field: 'tipo',
     sortable: true
   }

@@ -1,12 +1,9 @@
 <template>
-    <q-layout>
+    <q-layout class="background">
         <q-page-container>
-          <div style="text-align: center"
-            >
-            <img src="/icons/financeApp-logomarca.png" height = "370px" width="400px" alt="LogoMarca FinanceApp">
-          </div>
-        <q-page padding class="row justify-center">
+          <q-page padding class="row justify-center">
             <div style="max-width: 400px; width: 100%">
+              <img src="/icons/financeApp-logomarca.png" height = "370px" width="400px" alt="LogoMarca FinanceApp">
                 <q-card>
                     <q-tabs
                     v-model="tab"
@@ -24,13 +21,13 @@
                 
                 <q-tab-panels v-model="tab" animated>
                     
-                    <!-- LOGIN -->
-                    <q-tab-panel name="login">
-                        <q-form @submit.prevent="handleLogin" ref="loginForm" lazy-rules>
-                            <q-input
-                            filled
-                            v-model="email"
-                            label="Email"
+        <!-- LOGIN -->
+        <q-tab-panel name="login">
+            <q-form @submit.prevent="handleLogin" ref="loginForm" lazy-rules>
+                <q-input
+                filled
+                v-model="email"
+                label="Email"
                 type="email"
                 :rules="[ val => !!val || 'Email é obrigatório' ]"
                 required
@@ -47,7 +44,7 @@
                 <q-btn
                 label="Entrar"
                 type="submit"
-                color="black"
+                style="background-color: #04294e; color: white;"
                 class="q-mt-md"
                 :loading="loading"
                 :disable="loading"
@@ -101,7 +98,7 @@
                 <q-btn
                 label="Cadastrar"
                 type="submit"
-                color="black"
+                style="background-color: #04294e; color: white;"
                 class="q-mt-md"
                 :loading="loading"
                 :disable="loading"
@@ -188,3 +185,13 @@ async function handleRegister() {
   loading.value = false
 }
 </script>
+
+<style scoped>
+.background{
+  background-image: url('/icons/teste.jpg');
+  background-size: cover; 
+  background-attachment: fixed;
+  background-position: center; 
+}
+
+</style>

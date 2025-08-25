@@ -2,7 +2,9 @@
 <q-layout view="lHh Lpr lff">
       <q-header elevated style="background-color: #04294e;" >
         <q-toolbar>
-          <q-toolbar-title>Finance App</q-toolbar-title>
+          <q-toolbar-title>
+            Finance App
+          </q-toolbar-title>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
         </q-toolbar>
       </q-header>
@@ -48,7 +50,7 @@
 
           </q-list>
             <q-btn
-            style="color: white;"
+            style="color: white; border: solid 1px #FFF;"
             icon="logout"
             label="Sair"
             @click="handleLogout"

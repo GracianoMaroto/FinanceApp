@@ -23,6 +23,15 @@
       Deletar Despesa Fixa
     </q-btn>
 
+    <q-btn
+      icon="create"
+      style="background: #04294e; color: white;"
+      :disable="selected.length === 0"
+      @click="emit('editar-item', selected[0])"
+      >
+      Editar Despesa Fixa
+    </q-btn>
+
 </div>
 </div>
 </template>
@@ -37,29 +46,29 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['delete-item'])
+const emit = defineEmits(['delete-item' , 'editar-item'])
 
 const selected = ref([])
 
 const columns = [
   {
-    name: 'date',
-    label: 'Date',
-    align: 'left',
-    field: 'date',
+    name: 'dia',
+    label: 'Dia',
+    align: 'center',
+    field: 'dia',
     sortable: true
   },
   {
     name: 'descriçao',
     label: 'Descrição',
-    align: 'left',
+    align: 'center',
     field: 'descriçao',
     sortable: true
   },
   {
     name: 'valor',
     label: 'Valor',
-    align: 'left',
+    align: 'center',
     field: 'valor',
     sortable: true,
     format: val => Number(val).toLocaleString('pt-BR', {
@@ -70,14 +79,14 @@ const columns = [
   {
     name: 'categoria',
     label: 'Categoria',
-    align: 'left',
+    align: 'center',
     field: 'categoria',
     sortable: true
   },
   {
     name: 'tipo',
     label: 'Status',
-    align: 'left',
+    align: 'center',
     field: 'tipo',
     sortable: true
   },  
@@ -89,5 +98,6 @@ function deleteRow() {
   emit('delete-item', selected.value[0])
   selected.value = []
 }
+
 
 </script>

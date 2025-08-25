@@ -15,10 +15,14 @@ const showDialog = ref(false)
 const showDespesa = ref(false)
 const tab = ref('despesasDiarias')
 const despesasFixas = ref([])
+const descricoes = ref([])
+const $q = useQuasar()
+const despesaParaEditar = ref(null)
+const editarDespesa = ref(null)
 
 
-//Parte do dialog
 
+// Controle de autenticação
 onAuthStateChanged(auth, (user) => {
   if (user) {
     carregarDespesas()
@@ -28,8 +32,6 @@ onAuthStateChanged(auth, (user) => {
     despesasFixas.value = []
   }
 })
-const descricoes = ref([])
-const $q = useQuasar()
 
 // Carrega despesas ao iniciar
 const carregarDespesas = async () => {
@@ -40,6 +42,7 @@ const carregarDespesas = async () => {
   }
 }
 
+// Carrega despesas fixas ao iniciar
 const carregarDespesasFixas = async () => {
   try {
     despesasFixas.value = await buscarDespesasFixas()
@@ -48,6 +51,7 @@ const carregarDespesasFixas = async () => {
   }
 }
 
+// Função de deletar despesa
 const handleDelete = async (itemToDelete) => {
   try {
     await deletarDespesa(itemToDelete.id)
@@ -62,6 +66,8 @@ const handleDelete = async (itemToDelete) => {
     })
   }
 }
+
+// Função de deletar despesa
 const handleDeleteFixas = async (itemToDelete) => {
   try {
     await deletarDespesaFixa(itemToDelete.id)
@@ -75,6 +81,18 @@ const handleDeleteFixas = async (itemToDelete) => {
       message: 'Erro ao deletar despesa'
     })
   }
+}
+
+// Função de editar despesa fixa
+const handleEditFixas = (despesa) => {
+  despesaParaEditar.value = despesa
+  showDespesa.value = true
+}
+
+// Função de editar despesa diaria
+const handleEditDiarias = (despesa) => {
+  editarDespesa.value = despesa
+  showDialog.value = true
 }
 </script>
 
@@ -99,15 +117,27 @@ const handleDeleteFixas = async (itemToDelete) => {
           <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="despesasDiarias">
           <div class="q-pa-sm">
-            <div class="q-gutter-sm">
 
+            <div class="q-gutter-sm">
             <dialog-add-despesa
               v-model="showDialog"
+              :editar-despesa="editarDespesa"
               />
-              <q-btn style="background-color: #04294e;  color: white" @click="showDialog = true" label="+ Despesa Diária"/>   
+              <q-btn 
+              style="background-color: #04294e;  
+              color: white" 
+              @click="showDialog = true" 
+              label="+ Despesa Diária"
+              />   
             </div>
+
           <!-- Parte das despesas-->
-          <CategoriasFin :descricoes="descricoes" @delete-item="handleDelete" />
+          <CategoriasFin 
+          :descricoes="descricoes" 
+          @delete-item="handleDelete" 
+          @editar-diaria="handleEditDiarias"
+          />
+          
           </div>
           </q-tab-panel>
 
@@ -116,10 +146,20 @@ const handleDeleteFixas = async (itemToDelete) => {
               <div class="q-gutter-sm">
                 <dialog-despesa-fixa
                 v-model="showDespesa"
+                :despesa-para-editar="despesaParaEditar"
                 />
-                <q-btn style="background-color: #04294e;  color: white;" @click="showDespesa = true" label="+ Despesas Fixa"/>
+                <q-btn 
+                style="background-color: #04294e;  
+                color: white;" 
+                @click="showDespesa = true" 
+                label= "+ Despesa Fixa"
+                />
               </div>
-              <DespesasFixas :despesasFixas="despesasFixas" @delete-item="handleDeleteFixas" />
+              <DespesasFixas 
+              :despesasFixas="despesasFixas" 
+              @delete-item="handleDeleteFixas" 
+              @editar-item="handleEditFixas"
+              />
             </div>
           </q-tab-panel>
           </q-tab-panels>

@@ -1,5 +1,5 @@
 import { db, auth } from 'src/firebase'
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc} from 'firebase/firestore'
 
 // Adiciona uma despesa para o usuário logado
 export async function adicionarDespesa(dados) {
@@ -55,4 +55,21 @@ export async function deletarDespesaFixa(id) {
 
   const docRef = doc(db, 'despesas fixas', user.uid, 'lista', id)
   await deleteDoc(docRef)
+}
+// Editar despesa fixa por id
+export async function editarDespesaFixa(id, dados) {
+  const user = auth.currentUser
+  if (!user) throw new Error('Usuário não autenticado')
+
+  const docRef = doc(db, 'despesas fixas', user.uid, 'lista', id)
+  await updateDoc(docRef, dados)
+}
+
+// Editar despesa por id
+export async function editarDespesaDiaria(id, dados) {
+  const user = auth.currentUser
+  if (!user) throw new Error('Usuário não autenticado')
+
+  const docRef = doc(db, 'despesas', user.uid, 'lista', id)
+  await updateDoc(docRef, dados)
 }

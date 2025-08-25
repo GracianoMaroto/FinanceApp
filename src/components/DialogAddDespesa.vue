@@ -3,10 +3,13 @@
 import DialogBase from './DialogBase.vue';
 
 const model = defineModel({default: false})
+const props = defineProps({
+  editarDespesa: Object
+})
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
-import { adicionarDespesa, buscarDespesas } from 'src/services/despesasService'
+import { adicionarDespesa, buscarDespesas , editarDespesaDiaria} from 'src/services/despesasService'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from 'src/firebase'
 
@@ -18,15 +21,18 @@ onAuthStateChanged(auth, (user) => {
   }
 })
 const $q = useQuasar()
-
 const myForm = ref(null)
+
+const isEditing = ref(false)
+
 const descriçao = ref(null)
 const seleçao = ref(null)
 const date = ref(null)
 const seleçaoCategoria = ref(null)
-const categorias = ["Alimentação" , "Saúde" , "Transporte" , "Faculdade" , "Gerais"]
+const categorias = ["Alimentação" , "Saúde" , "Transporte" , "Pessoal" , "Gerais"]
 const opçoes = ["Crédito", "Débito", "Dinheiro", "Pix"]
 const descricoes = ref([])
+const id = ref(null)
 
 // Carrega despesas ao iniciar
 const carregarDespesas = async () => {
@@ -48,24 +54,24 @@ const processarFormulario = async () => {
       categoria: seleçaoCategoria.value
 
     }
-    await adicionarDespesa(novaDespesa)
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Despesa adicionada com sucesso'
-    })
+    if (isEditing.value && id.value) {
+      await editarDespesaDiaria(id.value, novaDespesa)
+      $q.notify({ color: 'blue', textColor: 'white', message: 'Despesa atualizada com sucesso' })
+    } else {
+      await adicionarDespesa(novaDespesa)
+      $q.notify({ color: 'green-4', textColor: 'white', message: 'Despesa salva com sucesso' })
+    }
     await carregarDespesas()
     reset()
     myForm.value.resetValidation()
     location.reload()
   } catch (error) {
-    console.error('Erro ao adicionar despesa:', error)
+    console.error('Erro ao salvar despesa:', error)
     $q.notify({
       color: 'negative',
       textColor: 'white',
       icon: 'error',
-      message: 'Erro ao adicionar despesa'
+      message: 'Erro ao salvar despesa'
     })
 
   }
@@ -101,6 +107,25 @@ function formatarValor(val) {
     currency: 'BRL',
   })
 }
+
+watch(() => props.editarDespesa, (despesaEditada) => {
+  if (despesaEditada) {
+    date.value = despesaEditada.date
+    descriçao.value = despesaEditada.descriçao
+    seleçao.value = despesaEditada.tipo
+    seleçaoCategoria.value = despesaEditada.categoria
+    valorNumerico.value = despesaEditada.valor
+    valorFormatado.value = despesaEditada.valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+    id.value = despesaEditada.id
+    isEditing.value = true
+  } else {
+    reset()
+    isEditing.value = false
+  }
+})
 
 </script>
 
@@ -173,7 +198,7 @@ function formatarValor(val) {
               </div>    
 
               <div class="col-12">
-                  <q-btn label="Adicionar Despesa" style="color: #04294e;" type="submit" />
+                  <q-btn label="Salvar Despesa" style="color: #04294e;" type="submit" />
                   <q-btn label="Limpar Campos" style="color: #04294e;" outline class="q-ml-sm" type="reset" />
               </div>    
               </q-form>

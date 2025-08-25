@@ -6,8 +6,8 @@ import {
   createWebHashHistory,
 } from 'vue-router'
 import routes from './routes'
-import { auth } from 'src/firebase' // ✅ aqui
-import { onAuthStateChanged } from 'firebase/auth' // ✅ separado
+import { auth } from 'src/firebase' 
+import { onAuthStateChanged } from 'firebase/auth' 
 
 export default defineRouter(function () {
   const createHistory = process.env.SERVER

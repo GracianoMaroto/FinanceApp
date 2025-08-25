@@ -45,19 +45,19 @@
                 label="Linkedin"
                 icon="ti-linkedin"
                 style="background-color: rgb(4, 41, 78); color: white;"
-                href="https://www.linkedin.com/in/4raciano-mar%C4%B4to-da-cunha-neto-992554316/"
-                />
-                <q-btn
-                label="E-mail"
-                icon="ti-info-alt"
-                style="background-color: rgb(4, 41, 78); color: white;"
-                href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJftLxDZMjrcxJddJMsNLsvVxzwNPkMMwzvlHfxdcJCrmGrSsWpRqCwGPRXKphFSzCRrsmg"
+                href="https://www.linkedin.com/in/graciano-marôto-da-cunha-neto-992554316"
                 />
                 <q-btn
                 label="GitHub"
                 icon="ti-github"
                 style="background-color: rgb(4, 41, 78); color: white;"
                 href="https://github.com/GracianoMaroto"
+                />
+                <q-btn
+                label="E-mail"
+                icon="ti-info-alt"
+                style="background-color: rgb(4, 41, 78); color: white;"
+                href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJftLxDZMjrcxJddJMsNLsvVxzwNPkMMwzvlHfxdcJCrmGrSsWpRqCwGPRXKphFSzCRrsmg"
                 />
             </div>
         </footer>

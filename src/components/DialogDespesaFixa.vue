@@ -1,66 +1,66 @@
 <script setup>
 import DialogBase from './DialogBase.vue';
-
+import { ref , watch} from 'vue'
 const model = defineModel({default: false})
+const props = defineProps({
+  despesaParaEditar: Object
+})
 
-import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { adicionarDespesaFixa, buscarDespesasFixas } from 'src/services/despesasService'
+import { adicionarDespesaFixa , editarDespesaFixa} from 'src/services/despesasService'
 
 const $q = useQuasar()
-
 const myForm = ref(null)
+
+
+const isEditing = ref(false)
+
+const dia = ref('')
 const descriçao = ref(null)
 const seleçao = ref(null)
 const seleçaoCategoria = ref(null)
-const date = ref(null)
-const opçoes = ["Pago","Pendente", "Atrasado"]
-const categorias = ["Alimentação" , "Saúde" , "Transporte" , "Faculdade" , "Gerais"]
-const despesasFixas = ref([])
+const valorNumerico = ref(0)
+const valorFormatado = ref('')
+const id = ref(null)
 
-// Carrega despesas ao iniciar
-const carregarDespesasFixas = async () => {
-  try {
-    despesasFixas.value = await buscarDespesasFixas()
-  } catch (error) {
-    console.error('Erro ao carregar despesas fixas:', error)
-  }
-}
+const opçoes = ["Pago","Pendente", "Atrasado"]
+const categorias = ["Gerais", "Pessoal" , "Cartão" , "Transporte" , "Alimentação", "Faculdade"]
+
 
 // Processa formulário e salva no Firebase
 const processarFormulario = async () => {
   try {
-    const novaDespesaFixa = {
-      date: date.value,
+    const dadosDespesa = {
+      dia: dia.value,
       descriçao: descriçao.value,
       valor: valorNumerico.value,
       tipo: seleçao.value,
       categoria: seleçaoCategoria.value
     }
-    await adicionarDespesaFixa(novaDespesaFixa)
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Despesa Fixa adicionada com sucesso'
-    })
-    await carregarDespesasFixas()
+    if (isEditing.value && id.value) {
+      await editarDespesaFixa(id.value, dadosDespesa)
+      $q.notify({ color: 'blue', textColor: 'white', message: 'Despesa atualizada com sucesso' })
+    } else {
+      await adicionarDespesaFixa(dadosDespesa)
+      $q.notify({ color: 'green-4', textColor: 'white', message: 'Despesa adicionada com sucesso' })
+    }
     reset()
     myForm.value.resetValidation()
+    model.value = false
     location.reload()
   } catch (error) {
-    console.error('Erro ao adicionar despesa fixa:', error)
+    console.error('Erro ao salvar despesa:', error)
     $q.notify({
       color: 'negative',
       textColor: 'white',
       icon: 'error',
-      message: 'Erro ao adicionar despesa fixa'
+      message: 'Erro ao salvar despesa'
     })
   }
 }
 
 const reset = () => {
-  date.value = null
+  dia.value = null
   descriçao.value = null
   seleçao.value = null
   valorNumerico.value = 0
@@ -68,8 +68,6 @@ const reset = () => {
   seleçaoCategoria.value = null
 }
 
-const valorNumerico = ref(0)
-const valorFormatado = ref('')
 
 // Função para formatar como moeda brasileira
 function formatarValor(val) {
@@ -88,6 +86,26 @@ function formatarValor(val) {
     currency: 'BRL',
   })
 }
+// Função watch para preencher os campos do dialog se receber uma despesa 
+watch(() => props.despesaParaEditar, (novaDespesa) => {
+  if (novaDespesa) {
+    dia.value = novaDespesa.dia
+    descriçao.value = novaDespesa.descriçao
+    seleçao.value = novaDespesa.tipo
+    seleçaoCategoria.value = novaDespesa.categoria
+    valorNumerico.value = novaDespesa.valor
+    valorFormatado.value = novaDespesa.valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+    id.value = novaDespesa.id
+    isEditing.value = true
+  } else {
+    reset()
+    isEditing.value = false
+  }
+})
+
 </script>
 
 <template>
@@ -101,22 +119,17 @@ function formatarValor(val) {
                     @submit.prevent="processarFormulario"
                     @reset="reset"
                     ref="myForm"
-                    >
-                    <div class="q-pa-md" style="max-width: 300px">
-                        <q-input filled v-model="date">
-                            <template v-slot:append>
-                                <q-icon name="event" class="cursor-pointer">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="date" mask="DD/MM/YYYY">
-                                            <div class="row items-center justify-end">
-                                                <q-btn v-close-popup label="Close" color="primary" flat />
-                                            </div>    
-                                        </q-date>    
-                                    </q-popup-proxy>    
-                                </q-icon>    
-                            </template>        
-                        </q-input>
-                </div>        
+                    > 
+
+              <div class="col-10 col-sm-4">
+                  <q-input
+                  label="Dia"
+                  v-model="dia"
+                  mask="##"
+                  lazy-rules
+                  :rules="[val => val && val.length > 0 || 'Por favor, digite o dia da despesa.']"
+                  />
+              </div>   
 
               <div class="col-10 col-sm-4">
                   <q-input
@@ -159,7 +172,7 @@ function formatarValor(val) {
               </div>
 
               <div class="col-12">
-                  <q-btn label="Adicionar Despesa Fixa" style="color: #04294e;" type="submit" />
+                  <q-btn label="Salvar Despesa Fixa" style="color: #04294e;" type="submit" />
                   <q-btn label="Limpar Campos" style="color: #04294e;" outline class="q-ml-sm" type="reset" />
               </div>    
               </q-form>
