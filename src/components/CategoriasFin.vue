@@ -1,41 +1,13 @@
 <template>
-  <div>
-    <q-table
-      class="q-mt-xl"
-      no-data-label="Sem Despesas para mostrar"
-      title="Despesas Diárias"
-      :columns="columns"
-      :rows="descricoes"
-      selection="single" 
-      v-model:selected="selected"
-      row-key="id"
-      style="background-color: white ; color: #04294e;"
-    />
-    <br>
-      <div class="q-gutter-sm">
-        <q-btn
-          icon="delete"
-          style="background: white; color: #04294e;"
-          @click="deleteRow"
-          :disable="selected.length === 0"
-        >
-          Deletar Despesa
-        </q-btn>
-        <q-btn
-        icon="create"
-        style="background: #04294e; color: white;"
-        :disable="selected.length === 0"
-        @click="emit('editar-diaria', selected[0])"
-        >
-        Editar Despesa Diária
-      </q-btn>
-    </div>
-
+  <div class="q-pt-md">
+    <tabela-padrao :columns="columns" :rows="descricoes" title="Despesas Diarias" @editar-despesa="editDespesa"
+      @delete-item="deleteRow" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import TabelaPadrao from './tabelas/TabelaPadrao.vue'
+
 
 defineProps({
   descricoes: {
@@ -43,10 +15,6 @@ defineProps({
     required: true
   }
 })
-
-const emit = defineEmits(['delete-item' , 'editar-diaria'])
-
-const selected = ref([])
 
 const columns = [
   {
@@ -90,10 +58,16 @@ const columns = [
   }
 ]
 
-function deleteRow() {
-  if (selected.value.length === 0) return
-  // Passa o item selecionado com id para o pai deletar
-  emit('delete-item', selected.value[0])
-  selected.value = []
+function deleteRow(despesa) {
+  emit('delete-item', despesa[0])
+}
+const emit = defineEmits(['editar-diaria', 'delete-item'])
+
+function editDespesa(despesa) {
+  emit('editar-diaria', despesa[0])
 }
 </script>
+
+
+
+<style scoped></style>

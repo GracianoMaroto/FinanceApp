@@ -1,13 +1,14 @@
 <script setup>
 import DialogBase from './DialogBase.vue';
-import { ref , watch} from 'vue'
-const model = defineModel({default: false})
+import { ref, watch } from 'vue'
+const model = defineModel({ default: false })
 const props = defineProps({
   despesaParaEditar: Object
 })
+const emit = defineEmits(["atualizar-lista"])
 
 import { useQuasar } from 'quasar'
-import { adicionarDespesaFixa , editarDespesaFixa} from 'src/services/despesasService'
+import { adicionarDespesaFixa, editarDespesaFixa } from 'src/services/despesasService'
 
 const $q = useQuasar()
 const myForm = ref(null)
@@ -23,8 +24,8 @@ const valorNumerico = ref(0)
 const valorFormatado = ref('')
 const id = ref(null)
 
-const opçoes = ["Pago","Pendente", "Atrasado"]
-const categorias = ["Gerais", "Pessoal" , "Cartão" , "Transporte" , "Alimentação", "Faculdade"]
+const opçoes = ["Pago", "Pendente", "Atrasado"]
+const categorias = ["Gerais", "Pessoal", "Cartão", "Transporte", "Alimentação", "Faculdade"]
 
 
 // Processa formulário e salva no Firebase
@@ -47,7 +48,8 @@ const processarFormulario = async () => {
     reset()
     myForm.value.resetValidation()
     model.value = false
-    location.reload()
+    emit("atualizar-lista")
+
   } catch (error) {
     console.error('Erro ao salvar despesa:', error)
     $q.notify({
@@ -109,75 +111,41 @@ watch(() => props.despesaParaEditar, (novaDespesa) => {
 </script>
 
 <template>
-    <dialog-base
-    v-model="model"    
-    :title="'Adicionar Despesa Fixa'"
-    >
-                <div>
-                    <q-form
-                    class="q-col-gutter-md text-center" 
-                    @submit.prevent="processarFormulario"
-                    @reset="reset"
-                    ref="myForm"
-                    > 
+  <dialog-base v-model="model" :title="'Adicionar Despesa Fixa'">
+    <div>
+      <q-form class="q-col-gutter-md text-center" @submit.prevent="processarFormulario" @reset="reset" ref="myForm">
 
-              <div class="col-10 col-sm-4">
-                  <q-input
-                  label="Dia"
-                  v-model="dia"
-                  mask="##"
-                  lazy-rules
-                  :rules="[val => val && val.length > 0 || 'Por favor, digite o dia da despesa.']"
-                  />
-              </div>   
+        <div class="col-10 col-sm-4">
+          <q-input label="Dia" v-model="dia" mask="##" lazy-rules
+            :rules="[val => val && val.length > 0 || 'Por favor, digite o dia da despesa.']" />
+        </div>
 
-              <div class="col-10 col-sm-4">
-                  <q-input
-                  label="Descrição"
-                  v-model="descriçao"
-                  lazy-rules
-                  :rules="[val => val && val.length > 0 || 'Por favor, digite algo.']"
-                  />
-              </div>    
+        <div class="col-10 col-sm-4">
+          <q-input label="Descrição" v-model="descriçao" lazy-rules
+            :rules="[val => val && val.length > 0 || 'Por favor, digite algo.']" />
+        </div>
 
-              <div class="col-10 col-sm-2">
-                  <q-input
-                    label="Valor"
-                    v-model="valorFormatado"
-                    @update:model-value="formatarValor"
-                    lazy-rules
-                    :rules="[val => val && val.length > 0 || 'Por favor, digite um valor.']"
-                    inputmode="numeric"
-                  />  
-              </div> 
+        <div class="col-10 col-sm-2">
+          <q-input label="Valor" v-model="valorFormatado" @update:model-value="formatarValor" lazy-rules
+            :rules="[val => val && val.length > 0 || 'Por favor, digite um valor.']" inputmode="numeric" />
+        </div>
 
-              <div class="col-12 col-sm-2">
-                  <q-select
-                  label="Categoria"
-                  v-model="seleçaoCategoria"
-                  :options="categorias"
-                  lazy-rules
-                  :rules="[val => val && val.length > 0 || 'Por favor, selecione uma opção.']"
-                  />
-              </div> 
+        <div class="col-12 col-sm-2">
+          <q-select label="Categoria" v-model="seleçaoCategoria" :options="categorias" lazy-rules behavior="menu"
+            :rules="[val => val && val.length > 0 || 'Por favor, selecione uma opção.']" />
+        </div>
 
-              <div class="col-12 col-sm-2">
-                  <q-select
-                  label="Status"
-                  v-model="seleçao"
-                  :options="opçoes"
-                  lazy-rules
-                  :rules="[val => val && val.length > 0 || 'Por favor, selecione uma opção.']"
-                  />
-              </div>
+        <div class="col-12 col-sm-2">
+          <q-select label="Status" v-model="seleçao" :options="opçoes" lazy-rules behavior="menu"
+            :rules="[val => val && val.length > 0 || 'Por favor, selecione uma opção.']" />
+        </div>
 
-              <div class="col-12">
-                  <q-btn label="Salvar Despesa Fixa" style="color: #04294e;" type="submit" />
-                  <q-btn label="Limpar Campos" style="color: #04294e;" outline class="q-ml-sm" type="reset" />
-              </div>    
-              </q-form>
-              </div>
-  </dialog-base>            
-  
+        <div class="col-12">
+          <q-btn label="Salvar Despesa Fixa" style="color: #04294e;" type="submit" />
+          <q-btn label="Limpar Campos" style="color: #04294e;" outline class="q-ml-sm" type="reset" />
+        </div>
+      </q-form>
+    </div>
+  </dialog-base>
+
 </template>
-

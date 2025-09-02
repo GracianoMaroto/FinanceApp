@@ -11,9 +11,9 @@
 
       <q-drawer
         v-model="drawer"
-        show-if-above
-        :width="200"
-        :breakpoint="430"
+          :width="200"
+          :breakpoint="1024"
+          :behavior="$q.screen.lt.md ? 'mobile' : 'desktop'"
       >
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd; background-color: #04294e;">
           <q-list padding style="color: white;">
@@ -78,10 +78,17 @@
           </div>
         </q-img>
       </q-drawer>
+<q-page-container>
+  
+        <q-toggle
+          v-model="isDark"
+          checked-icon="dark_mode"
+          unchecked-icon="light_mode"
+          color="primary"
+          label="Mudar tema"
+        />
 
-      <q-page-container>
         <router-view>
-          
         </router-view>
       </q-page-container>
 
@@ -95,13 +102,26 @@
 </template>
 
 <script setup>
-import { ref , onMounted} from 'vue'
+import { ref , onMounted , watch} from 'vue'
 import { auth } from 'src/firebase'
 import { useRouter } from 'vue-router'
 import { logout } from 'src/services/authService'
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
 
 const router = useRouter()
-const drawer = ref(false)
+
+let drawer = ref(!$q.screen.lt.md) // aberto só se não for mobile
+
+// Fechar automaticamente quando virar mobile
+watch(() => $q.screen.lt.md, (isMobile) => {
+  if (isMobile) {
+    drawer.value = false
+  } else{
+    drawer.value = true
+  }
+})
 
 async function handleLogout() {
   await logout()
@@ -120,10 +140,18 @@ onMounted(() => {
   }
 })
 
+const isDark = ref(localStorage.getItem('dark') === 'true' || $q.dark.isActive)
+
+watch(isDark, val => {
+  $q.dark.set(val)
+  localStorage.setItem('dark', val)
+})
+
 </script>
 
 
-<style lang="scss">
+<style scoped>
+
 .my-menu-link{
   color: #04294e;
   background: white;

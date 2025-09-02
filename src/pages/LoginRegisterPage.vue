@@ -2,7 +2,7 @@
     <q-layout class="background">
         <q-page-container>
           <q-page padding class="row justify-center">
-            <div style="max-width: 400px; width: 100%">
+            <div style="display: block; max-width: 500px; width: 100%; text-align: center;">
               <img src="/icons/financeApp-logomarca.png" height = "370px" width="400px" alt="LogoMarca FinanceApp">
                 <q-card>
                     <q-tabs

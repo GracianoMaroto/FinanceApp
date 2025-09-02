@@ -14,21 +14,31 @@ export async function adicionarDespesa(dados) {
 export async function buscarDespesas() {
   const user = auth.currentUser
   if (!user) throw new Error('Usuário não autenticado')
+    
+    const ref = collection(db, 'despesas', user.uid, 'lista')
+    const snapshot = await getDocs(ref)
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+  }
+  
+  // Excluir despesa por id
+  export async function deletarDespesa(id) {
+    const user = auth.currentUser
+    if (!user) throw new Error('Usuário não autenticado')
+      
+      const docRef = doc(db, 'despesas', user.uid, 'lista', id)
+      await deleteDoc(docRef)
+    }
+    
+    // Editar despesa por id
+    export async function editarDespesaDiaria(id, dados) {
+      const user = auth.currentUser
+      if (!user) throw new Error('Usuário não autenticado')
+    
+      const docRef = doc(db, 'despesas', user.uid, 'lista', id)
+      await updateDoc(docRef, dados)
+    }
 
-  const ref = collection(db, 'despesas', user.uid, 'lista')
-  const snapshot = await getDocs(ref)
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-}
-
-// Excluir despesa por id
-export async function deletarDespesa(id) {
-  const user = auth.currentUser
-  if (!user) throw new Error('Usuário não autenticado')
-
-  const docRef = doc(db, 'despesas', user.uid, 'lista', id)
-  await deleteDoc(docRef)
-}
-
+    
 // Adiciona uma despesa fixa para o usuário logado
 export async function adicionarDespesaFixa(dados) {
   const user = auth.currentUser
@@ -62,14 +72,5 @@ export async function editarDespesaFixa(id, dados) {
   if (!user) throw new Error('Usuário não autenticado')
 
   const docRef = doc(db, 'despesas fixas', user.uid, 'lista', id)
-  await updateDoc(docRef, dados)
-}
-
-// Editar despesa por id
-export async function editarDespesaDiaria(id, dados) {
-  const user = auth.currentUser
-  if (!user) throw new Error('Usuário não autenticado')
-
-  const docRef = doc(db, 'despesas', user.uid, 'lista', id)
   await updateDoc(docRef, dados)
 }
