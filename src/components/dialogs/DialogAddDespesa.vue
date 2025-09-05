@@ -1,5 +1,5 @@
 <script setup>
-import DialogBase from './DialogBase.vue';
+import DialogBase from '../dialogs/DialogBase.vue';
 
 const model = defineModel({ default: false })
 const props = defineProps({

@@ -10,12 +10,16 @@
 
                             <div class="text-caption text-grey">Data:</div>
                             <div>{{ props.row.date || props.row.dia }}</div>
+
                             <div class="text-caption text-grey">Descrição:</div>
                             <div>{{ props.row.descriçao }}</div>
+
                             <div class="text-caption text-grey">Valor:</div>
-                            <div>{{ props.row.valor }}</div>
+                            <div>R$ {{ props.row.valor.toFixed(2) }}</div>
+
                             <div class="text-caption text-grey">Categoria:</div>
                             <div>{{ props.row.categoria }}</div>
+
                             <div class="text-caption text-grey">Pagamento:</div>
                             <div>{{ props.row.tipo }}</div>
 
